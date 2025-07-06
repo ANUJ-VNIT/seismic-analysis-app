@@ -7,8 +7,23 @@ from scipy.interpolate import interp1d
 from streamlit_lottie import st_lottie
 import json
 import io
-from io import BytesIO
-import plotly.io as pio
+import matplotlib.pyplot as plt
+
+
+
+def fig_to_png_bytes(x, y, title, xlabel, ylabel):
+    buf = io.BytesIO()
+    plt.figure()
+    plt.plot(x, y)
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(buf, format='png')
+    plt.close()
+    buf.seek(0)
+    return buf
 
 from PIL import Image
 
@@ -420,17 +435,10 @@ if st.session_state.started:
                         csv = results.to_csv(index=False).encode('utf-8')
 
                         # Create PNGs for all 3 plots
-                        buffer_u = io.BytesIO()
-                        fig_u.write_image(buffer_u, format="png")
-                        buffer_u.seek(0)
+                        buffer_u = fig_to_png_bytes(t, u, "Displacement vs Time", "Time (s)", "Displacement (m)")
+                        buffer_v = fig_to_png_bytes(t, v, "Velocity vs Time", "Time (s)", "Velocity (m/s)")
+                        buffer_a = fig_to_png_bytes(t, a, "Acceleration vs Time", "Time (s)", "Acceleration (m/s²)")
 
-                        buffer_v = io.BytesIO()
-                        fig_v.write_image(buffer_v, format="png")
-                        buffer_v.seek(0)
-
-                        buffer_a = io.BytesIO()
-                        fig_a.write_image(buffer_a, format="png")
-                        buffer_a.seek(0)
                         # Download buttons
                         with st.expander("📥 Download Simulation Outputs"):
                             st.download_button(
@@ -527,17 +535,9 @@ if st.session_state.started:
                         csv = results.to_csv(index=False).encode('utf-8')
 
                         # Create PNGs for all 3 plots
-                        buffer_u = io.BytesIO()
-                        fig_u.write_image(buffer_u, format="png")
-                        buffer_u.seek(0)
-
-                        buffer_v = io.BytesIO()
-                        fig_v.write_image(buffer_v, format="png")
-                        buffer_v.seek(0)
-
-                        buffer_a = io.BytesIO()
-                        fig_a.write_image(buffer_a, format="png")
-                        buffer_a.seek(0)
+                        buffer_u = fig_to_png_bytes(t, u, "Displacement vs Time", "Time (s)", "Displacement (m)")   
+                        buffer_v = fig_to_png_bytes(t, v, "Velocity vs Time", "Time (s)", "Velocity (m/s)")
+                        buffer_a = fig_to_png_bytes(t, a, "Acceleration vs Time", "Time (s)", "Acceleration (m/s²)")
 
                         # Download buttons
                         with st.expander("📥 Download Simulation Outputs"):
@@ -616,12 +616,11 @@ if st.session_state.started:
                         })
                         csv = results.to_csv(index=False).encode('utf-8')
                         # Create PNGs for both plots
-                        buffer_u = io.BytesIO()
-                        fig_u.write_image(buffer_u, format="png")
-                        buffer_u.seek(0)
-                        buffer_v = io.BytesIO()
-                        fig_v.write_image(buffer_v, format="png")
-                        buffer_v.seek(0)
+                        buffer_u = fig_to_png_bytes(t, u, "Displacement vs Time", "Time (s)", "Displacement (m)")
+                        buffer_v = fig_to_png_bytes(t, v, "Velocity vs Time", "Time (s)", "Velocity (m/s)")
+
+
+
                         # Download buttons
                         with st.expander("📥 Download Simulation Outputs"):
                             st.download_button(
@@ -708,15 +707,9 @@ if st.session_state.started:
                         })
                         csv = results.to_csv(index=False).encode('utf-8')
                         # Create PNGs for all 3 plots
-                        buffer_u = io.BytesIO()
-                        fig_u.write_image(buffer_u, format="png")
-                        buffer_u.seek(0)
-                        buffer_v = io.BytesIO()
-                        fig_v.write_image(buffer_v, format="png")
-                        buffer_v.seek(0)
-                        buffer_a = io.BytesIO()
-                        fig_a.write_image(buffer_a, format="png")
-                        buffer_a.seek(0)
+                        buffer_u = fig_to_png_bytes(t, u, "Displacement vs Time", "Time (s)", "Displacement (m)")
+                        buffer_v = fig_to_png_bytes(t, v, "Velocity vs Time", "Time (s)", "Velocity (m/s)")
+                        buffer_a = fig_to_png_bytes(t, a, "Acceleration vs Time", "Time (s)", "Acceleration (m/s²)")
                         # Download buttons
                         with st.expander("📥 Download Simulation Outputs"):
                             st.download_button(
@@ -797,9 +790,12 @@ if st.session_state.started:
                             index=False).encode('utf-8')
 
                         # Export response spectrum plot to PNG
-                        buffer_spectrum = io.BytesIO()
-                        fig_rs.write_image(buffer_spectrum, format="png")
-                        buffer_spectrum.seek(0)
+                        buffer_spectrum = fig_to_png_bytes(
+                            Tn_values, max_disp,
+                            "Displacement Response Spectrum",
+                            "Natural Period (s)", "Max Displacement (m)"
+                        )
+
 
                         # Download buttons
                         with st.expander("📥 Download Response Spectrum Outputs"):
@@ -879,9 +875,12 @@ if st.session_state.started:
                         csv_spectrum = spectrum_df.to_csv(
                             index=False).encode('utf-8')
                         # Export response spectrum plot to PNG
-                        buffer_spectrum = io.BytesIO()
-                        fig_rs.write_image(buffer_spectrum, format="png")
-                        buffer_spectrum.seek(0)
+                        buffer_spectrum = fig_to_png_bytes(
+                            Tn_values, max_disp,
+                            "Displacement Response Spectrum",
+                            "Natural Period (s)", "Max Displacement (m)"
+                        )
+
 
                         # Download buttons
                         with st.expander("📥 Download Response Spectrum Outputs"):
@@ -944,9 +943,11 @@ if st.session_state.started:
                         csv_spectrum = spectrum_df.to_csv(
                             index=False).encode('utf-8')
                         # Export response spectrum plot to PNG
-                        buffer_spectrum = io.BytesIO()
-                        fig_rs.write_image(buffer_spectrum, format="png")
-                        buffer_spectrum.seek(0)
+                        buffer_spectrum = fig_to_png_bytes(
+                            Tn_values, max_disp,
+                            "Displacement Response Spectrum",
+                            "Natural Period (s)", "Max Displacement (m)"
+                        )
 
                         # Download buttons
                         with st.expander("📥 Download Response Spectrum Outputs"):
@@ -1011,9 +1012,11 @@ if st.session_state.started:
                         csv_spectrum = spectrum_df.to_csv(
                             index=False).encode('utf-8')
                         # Export response spectrum plot to PNG
-                        buffer_spectrum = io.BytesIO()
-                        fig_rs.write_image(buffer_spectrum, format="png")
-                        buffer_spectrum.seek(0)
+                        buffer_spectrum = fig_to_png_bytes(
+                            Tn_values, max_disp,
+                            "Displacement Response Spectrum",
+                            "Natural Period (s)", "Max Displacement (m)"
+                        )
 
                         # Download buttons
                         with st.expander("📥 Download Response Spectrum Outputs"):
@@ -1106,16 +1109,25 @@ if st.session_state.started:
                         })
                         csv = results.to_csv(index=False).encode('utf-8')
                         # Create PNGs for all 3 plots
-                        buffer_u = io.BytesIO()
-                        fig_u.write_image(buffer_u, format="png")
-                        buffer_u.seek(0)
-                        buffer_f = io.BytesIO()
-                        fig_f.write_image(buffer_f, format="png")
-                        buffer_f.seek(0)
-                        buffer_z = io.BytesIO()
-                        fig_z.write_image(buffer_z, format="png")
-                        buffer_z.seek(0)
-                        # Download buttons
+                        buffer_u = fig_to_png_bytes(
+                            time, normalized_u_epp,
+                            "Normalized Displacement vs Time",
+                            "Time (s)", "Normalized Displacement (u/uy)"
+                        )
+
+                        buffer_f = fig_to_png_bytes(
+                            time, normalized_f_s,
+                            "Normalized Restoring Force vs Time",
+                            "Time (s)", "Normalized Restoring Force (f_s/Fy)"
+                        )
+
+                        buffer_z = fig_to_png_bytes(
+                            normalized_u_epp, normalized_f_s,
+                            "Normalized Displacement vs Normalized Restoring Force",
+                            "Normalized Displacement (u/uy)", "Normalized Restoring Force (f_s/Fy)"
+                        )
+
+                        #Download buttons
                         with st.expander("📥 Download Simulation Outputs"):
                             st.download_button(
                                 label="📄 Download Data as CSV",
@@ -1210,15 +1222,21 @@ if st.session_state.started:
                         })
                         csv = results.to_csv(index=False).encode('utf-8')
                         # Create PNGs for all 3 plots
-                        buffer_u = io.BytesIO()
-                        fig_u.write_image(buffer_u, format="png")
-                        buffer_u.seek(0)
-                        buffer_f = io.BytesIO()
-                        fig_f.write_image(buffer_f, format="png")
-                        buffer_f.seek(0)
-                        buffer_z = io.BytesIO()
-                        fig_z.write_image(buffer_z, format="png")
-                        buffer_z.seek(0)
+                        buffer_u = fig_to_png_bytes(
+                            time, normalized_u_epp,
+                            "Normalized Displacement vs Time",
+                            "Time (s)", "Normalized Displacement (u/uy)"
+                        )
+                        buffer_f = fig_to_png_bytes(
+                            time, normalized_f_s,
+                            "Normalized Restoring Force vs Time",
+                            "Time (s)", "Normalized Restoring Force (f_s/Fy)"
+                        )
+                        buffer_z = fig_to_png_bytes(
+                            normalized_u_epp, normalized_f_s,
+                            "Normalized Displacement vs Normalized Restoring Force",
+                            "Normalized Displacement (u/uy)", "Normalized Restoring Force (f_s/Fy)"
+                        )
                         # Download buttons
                         with st.expander("📥 Download Simulation Outputs"):
                             st.download_button(
@@ -1315,15 +1333,21 @@ if st.session_state.started:
                         })
                         csv = results.to_csv(index=False).encode('utf-8')
                         # Create PNGs for all 3 plots
-                        buffer_u = io.BytesIO()
-                        fig_u.write_image(buffer_u, format="png")
-                        buffer_u.seek(0)
-                        buffer_f = io.BytesIO()
-                        fig_f.write_image(buffer_f, format="png")
-                        buffer_f.seek(0)
-                        buffer_z = io.BytesIO()
-                        fig_z.write_image(buffer_z, format="png")
-                        buffer_z.seek(0)
+                        buffer_u = fig_to_png_bytes(
+                            time, normalized_u_epp,
+                            "Normalized Displacement vs Time",
+                            "Time (s)", "Normalized Displacement (u/uy)"
+                        )
+                        buffer_f = fig_to_png_bytes(
+                            time, normalized_f_s,
+                            "Normalized Restoring Force vs Time",
+                            "Time (s)", "Normalized Restoring Force (f_s/Fy)"
+                        )
+                        buffer_z = fig_to_png_bytes(
+                            normalized_u_epp, normalized_f_s,
+                            "Normalized Displacement vs Normalized Restoring Force",
+                            "Normalized Displacement (u/uy)", "Normalized Restoring Force (f_s/Fy)"
+                        )
                         # Download buttons
                         with st.expander("📥 Download Simulation Outputs"):
                             st.download_button(
