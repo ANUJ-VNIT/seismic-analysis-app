@@ -262,7 +262,7 @@ elif st.session_state.page == "about":
     I express my sincere gratitude to:
 
     - **Dr. Chinmoy Kolay** – *Assistant Professor, IIT Kanpur*  
-    - **Mr. Hironmoy Kakoti** – *PhD Scholar,IIT Kanpur*  
+    - **Mr. Hironmoy Kakoty** – *PhD Scholar,IIT Kanpur*  
 
     for their guidance, mentorship, and support in developing this app. Their expertise in structural dynamics and seismic analysis has been invaluable in shaping this tool.
 
@@ -1046,7 +1046,7 @@ if st.session_state.started:
                 m = st.number_input("Mass (kg)", value=1)
                 ζ = st.number_input("Damping Ratio (0-1)", value=0.05)
                 Tn = st.number_input("Natural Period (s)", value=1.00)
-                Ry = st.number_input("Response Modification Factor")
+                Ry = st.number_input("Response Modification Factor", value=4.00)
 
                 time, accel = load_raw_ground_motion()
                 if time is not None and accel is not None:
@@ -1159,7 +1159,7 @@ if st.session_state.started:
                 m = st.number_input("Mass (kg)", value=1)
                 ζ = st.number_input("Damping Ratio (0-1)", value=0.05)
                 Tn = st.number_input("Natural Period (s)", value=1.00)
-                Ry = st.number_input("Response Modification Factor")
+                Ry = st.number_input("Response Modification Factor", value=4.00)
 
                 time, accel = load_raw_ground_motion()
                 if time is not None and accel is not None:
@@ -1269,7 +1269,7 @@ if st.session_state.started:
                 m = st.number_input("Mass (kg)", value=1)
                 ζ = st.number_input("Damping Ratio (0-1)", value=0.05)
                 Tn = st.number_input("Natural Period (s)", value=1.00)
-                Ry = st.number_input("Response Modification Factor")
+                Ry = st.number_input("Response Modification Factor", value=4.00)
                 rho = st.number_input("Rho (default 1)", value=1.0)
 
                 time, accel = load_raw_ground_motion()
