@@ -255,7 +255,6 @@ elif st.session_state.page == "about":
 
         📧 **Email:** anuj2708sharma@gmail.com  
         🌐 **LinkedIn:** www.linkedin.com/in/anuj-sharma2708
-        💻 **GitHub:** 
         """)
 
     st.markdown("<h2>Credits & Acknowledgements</h2>", unsafe_allow_html=True)
